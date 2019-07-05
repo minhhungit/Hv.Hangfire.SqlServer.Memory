@@ -6,7 +6,9 @@ Memory queues support for SQL Server job storage implementation for Hangfire
 ---
 
 ### Installation
->Install-Package Hv.Hangfire.SqlServer.Memory
+```powershell
+Install-Package Hv.Hangfire.SqlServer.Memory
+```
 
 ### Configuration
 If you are using only default queue, call the UseMemoryQueues method just after UseSqlServerStorage method call and pass the path pattern as an argument.
