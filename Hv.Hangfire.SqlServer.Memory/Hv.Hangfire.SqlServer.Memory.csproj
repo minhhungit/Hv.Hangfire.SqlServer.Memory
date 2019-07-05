@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.3;netstandard2.0;</TargetFrameworks>
+    <Title>Hv.Hangfire.SqlServer.Memory</Title>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright 2019 HungVo &lt;it.minhhung@gmail.com&gt;</Copyright>
+    <Description>Memory queues support for SQL Server job storage implementation for Hangfire</Description>
+    <Authors>Hung Vo</Authors>
+    <PackageLicenseUrl>https://github.com/minhhungit/Hv.Hangfire.SqlServer.Memory/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/minhhungit/Hv.Hangfire.SqlServer.Memory/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/minhhungit/Hv.Hangfire.SqlServer.Memory/</RepositoryUrl>
+    <PackageTags>hangfire memory mssql message queue dotnet csharp netstandard20 dotnetcore</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Company />
+    <PackageId>Hv.Hangfire.SqlServer.Memory</PackageId>
+    <Product>Hv.Hangfire.SqlServer.Memory</Product>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DebugType>full</DebugType>
+    <DefineConstants>$(DefineConstants);FEATURE_TRANSACTIONSCOPE;FEATURE_CONFIGURATIONMANAGER;FEATURE_COMMANDSET</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.7.4" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+  </ItemGroup>
+  
+</Project>
