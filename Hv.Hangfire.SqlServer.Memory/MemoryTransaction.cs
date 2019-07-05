@@ -39,17 +39,17 @@ namespace Hv.Hangfire.SqlServer.Memory
         public void Commit()
         {
             // remove item out of queue
-            if (_queue.ContainsKey(MessageKey))
+            while (true)
             {
-                while (true)
+                if (_queue.Count > 0 && _queue.ContainsKey(MessageKey))
                 {
                     if (_queue.TryRemove(MessageKey, out _))
                     {
                         break;
                     }
+                }
 
-                    System.Threading.Thread.Sleep(1);
-                }                
+                System.Threading.Thread.Sleep(1);
             }
         }
 
