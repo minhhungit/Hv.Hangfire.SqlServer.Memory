@@ -1,4 +1,4 @@
-# Hv.Hangfire.SqlServer.Memory
+# Hv.Hangfire.SqlServer.Memory <a href="https://www.nuget.org/packages/Hv.Hangfire.SqlServer.Memory/"><img src="https://img.shields.io/nuget/v/Hv.Hangfire.SqlServer.Memory.svg?style=flat" /> </a>
 Memory queues support for SQL Server job storage implementation for Hangfire
 
 > Note: This library has not completed yet, I'm still working on Transaction
