@@ -6,7 +6,7 @@ namespace Hv.Hangfire.SqlServer.Memory
 {
     internal interface IMemoryTransaction : IDisposable
     {
-        MemoryQueueMessage Receive(ConcurrentDictionary<string, MemoryQueueMessage> queue, TimeSpan timeout);
+        MemoryQueueMessage Receive(TimeSpan timeout);
 
         void Commit();
         void Abort();
@@ -22,9 +22,9 @@ namespace Hv.Hangfire.SqlServer.Memory
             _queue = queue;
         }
 
-        public MemoryQueueMessage Receive(ConcurrentDictionary<string, MemoryQueueMessage> queue, TimeSpan timeout)
+        public MemoryQueueMessage Receive(TimeSpan timeout)
         {
-            var item = queue.FirstOrDefault(x => x.Value.IsTaking == false);
+            var item = _queue.FirstOrDefault(x => x.Value.IsTaking == false);
             var msg = item.Value;
 
             if (msg != null)

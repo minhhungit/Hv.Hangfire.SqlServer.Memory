@@ -32,11 +32,12 @@ namespace Hv.Hangfire.SqlServer.Memory
                     transaction = new MemoryTransaction(messageQueue);
 
                     MemoryQueueMessage message = queueIndex == queues.Length - 1
-                        ? transaction.Receive(messageQueue, SyncReceiveTimeout)
-                        : transaction.Receive(messageQueue, ReceiveTimeout);
+                        ? transaction.Receive(SyncReceiveTimeout)
+                        : transaction.Receive(ReceiveTimeout);
 
                     if (message != null)
                     {
+                        jobId = message.Label;
                         return new MemoryFetchedJob(transaction, message.Label);
                     }                    
                 }
