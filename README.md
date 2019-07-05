@@ -1,6 +1,10 @@
 # Hv.Hangfire.SqlServer.Memory
 Memory queues support for SQL Server job storage implementation for Hangfire
 
+> Note: This library has not completed yet, I'm still working on Transaction
+
+---
+
 ### Installation
 >Install-Package Hv.Hangfire.SqlServer.Memory
 
