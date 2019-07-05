@@ -85,6 +85,8 @@ namespace MySample
 
             Task.Run(() =>
             {
+                // RecurringJob.AddOrUpdate(() => Console.Write("Powerful!"), "0 * * ? * *"); // every minute
+
                 for (int i = 0; i < 5000; i++)
                 {
                     backgroundJobs.Enqueue(() => Console.WriteLine($"Hello world from Hangfire <{i}> !"));
