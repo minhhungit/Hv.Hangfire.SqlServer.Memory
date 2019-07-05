@@ -10,7 +10,7 @@ If you are using only default queue, call the UseMemoryQueues method just after 
 ```csharp
 GlobalConfiguration.Configuration
     .UseSqlServerStorage("<connection string or its name>")
-    .UseMemoryQueues(@"my-memory-{0}");
+    .UseMemoryQueues(@"hangfire-{0}");
 ```
 
 To use multiple queues, you should pass them explicitly:
@@ -18,5 +18,5 @@ To use multiple queues, you should pass them explicitly:
 ```csharp
 GlobalConfiguration.Configuration
     .UseSqlServerStorage("<connection string or its name>")
-    .UseMemoryQueues(@"my-memory-{0}", "critical", "default");
+    .UseMemoryQueues(@"hangfire-{0}", "critical", "default");
 ```
