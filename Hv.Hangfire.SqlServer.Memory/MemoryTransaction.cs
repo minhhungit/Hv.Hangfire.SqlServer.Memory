@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+
+namespace Hv.Hangfire.SqlServer.Memory
+{
+    internal interface IMemoryTransaction : IDisposable
+    {
+        MemoryQueueMessage Receive(ConcurrentDictionary<string, MemoryQueueMessage> queue, TimeSpan timeout);
+
+        void Commit();
+        void Abort();
+    }
+
+    internal class MemoryTransaction : IMemoryTransaction
+    {
+        private string MessageKey = string.Empty;
+        private ConcurrentDictionary<string, MemoryQueueMessage> _queue;
+
+        public MemoryTransaction(ConcurrentDictionary<string, MemoryQueueMessage> queue)
+        {
+            _queue = queue;
+        }
+
+        public MemoryQueueMessage Receive(ConcurrentDictionary<string, MemoryQueueMessage> queue, TimeSpan timeout)
+        {
+            var item = queue.FirstOrDefault(x => x.Value.IsTaking == false);
+            var msg = item.Value;
+
+            if (msg != null)
+            {
+                msg.IsTaking = true;
+                MessageKey = item.Key;
+            }
+
+            return msg;
+        }
+
+        public void Commit()
+        {
+            // remove item out of queue
+            if (_queue.ContainsKey(MessageKey))
+            {
+                while (true)
+                {
+                    if (_queue.TryRemove(MessageKey, out _))
+                    {
+                        break;
+                    }
+
+                    System.Threading.Thread.Sleep(1);
+                }                
+            }
+        }
+
+        public void Abort()
+        {
+            if (_queue.ContainsKey(MessageKey))
+            {
+                _queue[MessageKey].IsTaking = false;
+            }
+        }
+
+        public void Dispose()
+        {
+        }        
+    }
+}

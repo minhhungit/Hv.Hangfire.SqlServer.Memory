@@ -4,10 +4,13 @@ using System;
 
 namespace Hv.Hangfire.SqlServer.Memory
 {
-    public class MemoryFetchedJob : IFetchedJob
+    internal class MemoryFetchedJob : IFetchedJob
     {
-        public MemoryFetchedJob([NotNull] string jobId)
+        private readonly IMemoryTransaction _transaction;
+
+        public MemoryFetchedJob([NotNull] IMemoryTransaction transaction,[NotNull] string jobId)
         {
+            _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
             JobId = jobId ?? throw new ArgumentNullException(nameof(jobId));
         }
 
@@ -15,17 +18,17 @@ namespace Hv.Hangfire.SqlServer.Memory
 
         public void RemoveFromQueue()
         {
-
+            _transaction.Commit();
         }
 
         public void Requeue()
         {
-
+            _transaction.Abort();
         }
 
         public void Dispose()
         {
-
+            _transaction.Dispose();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Hv.Hangfire.SqlServer.Memory
         public IEnumerable<long> GetEnqueuedJobIds(string queue, int @from, int perPage)
         {
             var messageQueue = MemoryQueueBank.Get(_pathPattern, queue);
-            return messageQueue.Skip(from).Take(perPage).Select(x => long.Parse(x.Label));
+            return messageQueue.Skip(from).Take(perPage).Select(x => long.Parse(x.Value.Label));
 
             //var result = new List<long>();
 

@@ -19,33 +19,37 @@ namespace Hv.Hangfire.SqlServer.Memory
         public IFetchedJob Dequeue(string[] queues, CancellationToken cancellationToken)
         {
             var queueIndex = 0;
+            string jobId = null;
 
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
+                MemoryTransaction transaction = null;
 
                 try
                 {
                     var messageQueue = MemoryQueueBank.Get(_pathPattern, queues[queueIndex]);
+                    transaction = new MemoryTransaction(messageQueue);
 
-                    if (queueIndex == queues.Length - 1)
+                    MemoryQueueMessage message = queueIndex == queues.Length - 1
+                        ? transaction.Receive(messageQueue, SyncReceiveTimeout)
+                        : transaction.Receive(messageQueue, ReceiveTimeout);
+
+                    if (message != null)
                     {
-                        messageQueue.TryTake(out MemoryQueueMessage message, SyncReceiveTimeout);
-                        return new MemoryFetchedJob(message.Label);
-                    }
-                    else
-                    {
-                        messageQueue.TryTake(out MemoryQueueMessage message, ReceiveTimeout);
-                        return new MemoryFetchedJob(message.Label);
-                    }
+                        return new MemoryFetchedJob(transaction, message.Label);
+                    }                    
                 }
-                catch// (Exception ex)
+                catch (Exception ex)
                 {
                     // Receive timeout occurred, we should just switch to the next queue
                 }
                 finally
                 {
-
+                    if (jobId == null)
+                    {
+                        transaction?.Dispose();                        
+                    }
                 }
 
                 queueIndex = (queueIndex + 1) % queues.Length;
@@ -59,17 +63,25 @@ namespace Hv.Hangfire.SqlServer.Memory
         public void Enqueue(System.Data.IDbConnection connection, string queue, string jobId)
         {
             var messageQueue = MemoryQueueBank.Get(_pathPattern, queue);
-            var message = new MemoryQueueMessage { Label = jobId };
+            var message = new MemoryQueueMessage { Label = jobId, IsTaking = false };
 
-            messageQueue.Add(message);
+            messageQueue.AddOrUpdate(jobId, message, (key, oldValue) =>
+            {
+                oldValue.IsTaking = false;
+                return oldValue;
+            });
         }
 #else
         public void Enqueue(System.Data.Common.DbConnection connection, System.Data.Common.DbTransaction transaction, string queue, string jobId)
         {
             var messageQueue = MemoryQueueBank.Get(_pathPattern, queue);
-            var message = new MemoryQueueMessage { Label = jobId };
+            var message = new MemoryQueueMessage { Label = jobId, IsTaking = false };
 
-            messageQueue.Add(message);
+            messageQueue.AddOrUpdate(jobId, message, (key, oldValue) =>
+            {
+                oldValue.IsTaking = false;
+                return oldValue;
+            });
         }
 #endif
     }
