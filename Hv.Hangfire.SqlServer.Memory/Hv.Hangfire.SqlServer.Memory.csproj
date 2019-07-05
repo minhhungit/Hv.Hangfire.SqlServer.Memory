@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard1.3;netstandard2.0;</TargetFrameworks>
     <Title>Hv.Hangfire.SqlServer.Memory</Title>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Copyright>Copyright 2019 HungVo &lt;it.minhhung@gmail.com&gt;</Copyright>
     <Description>Memory queues support for SQL Server job storage implementation for Hangfire</Description>
     <Authors>Hung Vo</Authors>
@@ -10,9 +10,9 @@
     <PackageProjectUrl>https://github.com/minhhungit/Hv.Hangfire.SqlServer.Memory/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/minhhungit/Hv.Hangfire.SqlServer.Memory/</RepositoryUrl>
     <PackageTags>hangfire memory mssql message queue dotnet csharp netstandard20 dotnetcore</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <PackageReleaseNotes>fake transaction</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <Company />
     <PackageId>Hv.Hangfire.SqlServer.Memory</PackageId>
     <Product>Hv.Hangfire.SqlServer.Memory</Product>
